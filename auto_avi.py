@@ -9,7 +9,7 @@ ssh.connect(hostname='[ip]', username='[username]', password='[password]')
 sftp = ssh.open_sftp()
 
 local_folder= 'Enter folder path here'
-remote_folder='Enter folder path here'
+remote_folder='Enter Desktop path here'+sys.argv[1]
 
 # set working directory to remote folder
 sftp.chdir(remote_folder)
