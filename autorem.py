@@ -2,10 +2,27 @@ import os
 import paramiko
 import sys
 
+# connect to ssh server
 ssh = paramiko.SSHClient() 
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-ssh.connect(server=172.16.5.36 , username=username, password=password)
+ssh.connect(hostname='[ip]', username='[username]', password='[password]')
 sftp = ssh.open_sftp()
-sftp.put(f'F:\{sys.argv[1]}', 'remotepath')
+
+local_folder= 'Enter folder path here'
+remote_folder='Enter folder path here'
+
+# set working directory to remote folder
+sftp.chdir(remote_folder)
+
+remote_list = sftp.listdir('.')
+local_list = os.listdir(local_folder)
+
+for file in local_list:
+    if file not in remote_list:
+        sftp.put(local_folder+file, file)
+        print(file+ ' was added.')
+
+print('all done!')
+
 sftp.close()
 ssh.close()
